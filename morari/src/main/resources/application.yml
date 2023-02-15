@@ -1,0 +1,116 @@
+server:
+  # error:
+  #   include-stacktrace: always
+  #   path: /error
+  #   whitelabel:
+  #     enabled: false
+  port: 8443
+  servlet:
+    context-path: /morari
+    encoding:
+      charset: UTF-8
+  ssl:
+    # 憑證別名
+    key-alias: baeldung
+    # 僅提供 https 服務(不使用 http)
+    enabled: true
+    # 憑證路徑
+    key-store: 
+    # 憑證密碼
+    key-store-password: 
+    # 憑證格式：JKS 或 PKCS12
+    key-store-type: PKCS12
+  http2:
+    enabled: true
+
+
+
+
+spring:
+  datasource:
+    url: 
+# -------------MSSQL------------- 
+    driver-class-name: 
+    # url: 
+    password: 
+    username:     
+    # password: 
+    # username:     
+# -------------MYSQL------------- 
+    # driver-class-name: 
+    # url: 
+    # password: 
+    # username: 
+
+  jpa:
+    properties:
+      hibernate:
+# -------------MSSQL------------- 
+        dialect: 
+        allow_update_outside_transaction: 
+        format_sql: 
+        hbm2ddl:
+          auto: 
+    # show-sql: 
+# -------------MYSQL-------------
+        # dialect: 
+        # '[allow_update_outside_transaction]': 
+        # # '[hbm2ddl.auto]': 
+        # '[hbm2ddl.auto]': 
+        # '[format_sql]': 
+    # show-sql: 
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1MB
+      max-request-size: 1MB
+  thymeleaf:
+    prefix: :
+  web:
+    resources:
+      cache:
+        period: 0
+      static-locations: 
+  # cloud:
+  #   azure:
+  #     storage:
+  #       blob:
+  #         account-name: 
+  #         account-key: 
+  #         endpoint: 
+  main:
+    allow-circular-references: true
+# oauth2
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: 
+            clientSecret: 
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          google:
+            client-id: 
+            client-secret: 
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          facebook:
+            clientId: 
+            clientSecret: 
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+  mail:
+    host: 
+    username: 
+    password: 
+    port: 587
+    protocol: 
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: 
+            enable: true
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
