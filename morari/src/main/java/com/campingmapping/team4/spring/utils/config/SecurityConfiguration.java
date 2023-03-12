@@ -20,12 +20,17 @@ import com.campingmapping.team4.spring.utils.service.OAuth2AuthSuccessHandler;
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
+   
     private final JwtAuthenticationFilter jwtAuthFilter;
+   
     private final AuthenticationProvider authenticationProvider;
-    private LogoutSuccessHandlerImpl logoutSuccessHandler;
+    
+    private final LogoutSuccessHandlerImpl logoutSuccessHandler;
+    
     // private final OAuth2UserService<OAuth2UserRequest, OAuth2User>
     // oAuthUserService;
-    private final OAuth2AuthSuccessHandler successHandler;
+    
+    private final OAuth2AuthSuccessHandler  successHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
@@ -33,13 +38,14 @@ public class SecurityConfiguration {
             http
                     // 關閉CSRF
                     .csrf().disable()
-                    // Frame 同源設定
-                    .headers(h -> h
-                            .frameOptions().sameOrigin())
+                //     Frame 同源設定
+                    .headers(h->h
+                    .frameOptions().sameOrigin())
                     // 設定是否需要驗證的路徑(更改成使用註釋)
                     .authorizeHttpRequests(a -> a
                             .requestMatchers("/admin").hasAnyAuthority("SUPERADMIN")
-                            .anyRequest().permitAll())
+                            .anyRequest().permitAll()
+                            )
                     // 啟用jwt監聽
                     .authenticationProvider(authenticationProvider)
                     .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -50,8 +56,7 @@ public class SecurityConfiguration {
                     // OAuth2登入
                     .oauth2Login(o -> o
                             .loginPage("/login")
-                            .authorizationEndpoint(auth -> auth
-                                    .baseUri("/login/oauth2/authorization"))
+                            .authorizationEndpoint(auth -> auth.baseUri("/login/oauth2/authorization"))
                             .successHandler(successHandler))
                     // 登出頁面
                     .logout(logout -> logout
@@ -61,16 +66,15 @@ public class SecurityConfiguration {
                             .permitAll())
                     // 若無權限指定路徑
                     // .exceptionHandling(exceptionHandling -> {
-                    // System.out.println("88");
                     // exceptionHandling.accessDeniedPage("/home");
                     // })
                     .sessionManagement(session -> session
                             .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
             return http.build();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+                e.printStackTrace();
+                return null;
+            }
     }
 
 }

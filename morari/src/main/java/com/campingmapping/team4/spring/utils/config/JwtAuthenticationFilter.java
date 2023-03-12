@@ -26,13 +26,14 @@ import com.campingmapping.team4.spring.utils.service.JwtService;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtService jwtService;
+
   private final UserDetailsService userDetailsService;
 
   @Override
   protected void doFilterInternal(
-      @NonNull HttpServletRequest request,
-      @NonNull HttpServletResponse response,
-      @NonNull FilterChain filterChain) throws ServletException, IOException {
+    @NonNull HttpServletRequest request,
+    @NonNull HttpServletResponse response,
+    @NonNull FilterChain filterChain) throws ServletException, IOException {
     // 進入驗證程序
     AuthenticationResponse authenticationResponse;
     // 取得access token和refresh token
@@ -61,6 +62,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String email = jwtService.extractUsername(refreshToken);
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         if (jwtService.isTokenValid(refreshToken, userDetails)) {
+
+          // 權限是否正常
+          if (!(userDetails.isAccountNonExpired() && userDetails.isAccountNonLocked() && userDetails.isEnabled()
+              && userDetails.isCredentialsNonExpired())) {
+            jwtService.removeToken(response);
+            response.sendRedirect("/morari/login?error=user_not_authorized");
+            return;
+          }
+
           // 生成新令牌
           authenticationResponse = jwtService.generateToken(userDetails, remember);
           // 刷新Cookie

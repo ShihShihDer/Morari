@@ -72,7 +72,6 @@ public class JwtService {
         .setSubject(userDetails.getUsername())
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + (MyConstants.ACCESS_TOKEN_VALIDATION_SECOND)))
-
         .signWith(getSignInKey(), SignatureAlgorithm.HS512)
         .compact();
     return new AuthenticationResponse(accessToken, refreshToken, "bearer");
@@ -102,6 +101,15 @@ public class JwtService {
     UUID uid = UUID.fromString((String) claims.get("uid"));
     return uid;
   }
+  // 當前使用者的UID字串
+ public String getStringUId(HttpServletRequest request){
+  UUID uid = getUId(request);
+  try {
+    return uid.toString();
+  } catch (Exception e) {
+    return "";
+  }
+ }
 
   // 設置HttpOnly&Https的Cookie
   public Cookie setCookie(String key, String value) {

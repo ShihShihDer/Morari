@@ -2,7 +2,6 @@ package com.campingmapping.team4.spring.utils.service;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +25,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthAccountService {
   // private final AuthAccountRepository authAccountRepository;
-  @Autowired
+  
   private final UserRepository userRepository;
-  @Autowired
+  
   private final RoleRepository roleRepository;
 
   // private final MemberService memberService;
